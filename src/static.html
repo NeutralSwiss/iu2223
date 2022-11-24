@@ -58,7 +58,8 @@
                         <span class="input-group-text" id="search-in-users-button">🔍</span>
                     </div>
                     <div class="col">
-                        <button id="search-advanced-toggle-users" title="Búsqueda avanzada" class="add-user btn btn-outline-secondary">🔍🔍</button>
+                        <button id="search-advanced-toggle-users" title="Búsqueda avanzada"
+                            class="add-user btn btn-outline-secondary">🔍🔍</button>
                     </div>
                     <div class="col text-end">
                         <button title="Crea un nuevo usuario" class="add-user btn btn-outline-primary">➕</button>
@@ -68,15 +69,18 @@
                 <div id="filter-in-users" class="m-2 p-2 border border-2 rounded">
                     <div class="row">
                         <div class="col-8">
-                            <input type="search" name="name" class="m-1 form-control form-control-sm" name="" placeholder="Nombre o fragmento">
+                            <input type="search" name="name" class="m-1 form-control form-control-sm" name=""
+                                placeholder="Nombre o fragmento">
                         </div>
                         <div class="col-4">
-                            <input type="search" name="dni" class="m-1 form-control form-control-sm" placeholder="DNI o fragmento">    
+                            <input type="search" name="dni" class="m-1 form-control form-control-sm"
+                                placeholder="DNI o fragmento">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-6">
-                            <input type="search" name="email" class="m-1 form-control form-control-sm" placeholder="correo o fragmento">
+                            <input type="search" name="email" class="m-1 form-control form-control-sm"
+                                placeholder="correo o fragmento">
                         </div>
                         <div class="col-6">
                             <select name="role" class="m-1 form-select form-select-sm">
@@ -84,9 +88,11 @@
                                 <option value="admin">admin</option>
                                 <option value="alumno">alumno</option>
                                 <option value="profesor">profesor</option>
-                            </select>                
+                            </select>
                         </div>
                     </div>
+                    <button type="button" class="rm-fila btn btn-outline-danger btn-sm"
+                        onclick="borrarfiltrosUser()">Borrar filtros</button>
                 </div>
 
                 <table class="table">
@@ -1096,7 +1102,8 @@
                         <span class="input-group-text" id="search-in-users-button">🔍</span>
                     </div>
                     <div class="col">
-                        <button id="search-advanced-toggle-courses" title="Búsqueda avanzada" class="add-user btn btn-outline-secondary">🔍🔍</button>
+                        <button id="search-advanced-toggle-courses" title="Búsqueda avanzada"
+                            class="add-user btn btn-outline-secondary">🔍🔍</button>
                     </div>
                     <div class="col text-end">
                         <button title="Crea un nuevo curso" class="add-course btn btn-outline-primary">➕</button>
@@ -1106,7 +1113,8 @@
                 <div id="filter-in-courses" class="m-2 p-2 border border-2 rounded">
                     <div class="row">
                         <div class="col-8">
-                            <input type="search" name="name" class="m-1 form-control form-control-sm" name="" placeholder="Nombre o fragmento">
+                            <input type="search" name="name" class="m-1 form-control form-control-sm" name=""
+                                placeholder="Nombre o fragmento">
                         </div>
                         <div class="col-4">
                             <select name="area" class="m-1 form-select form-select-sm">
@@ -1114,7 +1122,7 @@
                                 <option value="ofimática">ofimática</option>
                                 <option value="internet">internet</option>
                                 <option value="tec. informáticas">tec. informáticas</option>
-                            </select>       
+                            </select>
                         </div>
                     </div>
                     <div class="row">
@@ -1124,12 +1132,15 @@
                                 <option value="iniciación">iniciación</option>
                                 <option value="especialización">especialización</option>
                                 <option value="generalista">generalista</option>
-                            </select>                
+                            </select>
                         </div>
                         <div class="col-6">
-                            <input type="search" name="ediciones" class="m-1 form-control form-control-sm" placeholder="ediciones">
+                            <input type="search" name="ediciones" class="m-1 form-control form-control-sm"
+                                placeholder="ediciones">
                         </div>
                     </div>
+                    <button type="button" class="rm-fila btn btn-outline-danger btn-sm"
+                        onclick="borrarfiltrosCourses()">Borrar filtros</button>
                 </div>
 
                 <table class="table">
@@ -1781,60 +1792,86 @@
     <!-- Todos los scripts de interaccion, aqui -->
     <script src="js/statictest.js" type="module"></script>
 
-    <script>
-    function advancedUserFilter(filterSel, rowSel) {
-        const filterDiv = document.querySelector(filterSel);
-        const name = filterDiv.querySelector("input[name=name]").value.toLowerCase();
-        const dni = filterDiv.querySelector("input[name=dni]").value.toLowerCase();
-        const email = filterDiv.querySelector("input[name=email]").value.toLowerCase();
-        const role = filterDiv.querySelector("select[name=role]").value.toLowerCase();
-        
-        const valueAt = (row, i) => row.children[i].innerText || row.children[i].textContent;
-        
-        for (let r of document.querySelectorAll(rowSel)) {
-            let ok = true;
-            for (let [f, col] of 
-                [[name, 0], [role, 1], [email, 2], [dni, 3]]) {
-                    if (f == '' || ! ok) continue;
-                    const v = valueAt(r, col).toLowerCase();
-                    console.log(v, f, col, v.indexOf(f));
-                    if (v.indexOf(f) == -1) ok = false;
-            }
-            r.style.display = ok ? '' : 'none';
-        }
-    }
-    document.querySelectorAll("#filter-in-users input, #filter-in-users select").forEach(o =>
-        o.addEventListener('input', e => {
-            console.log("filtrando");
-            advancedUserFilter("#filter-in-users", ".user-table-row");
-        }));
 
-    function advancedCourseFilter(filterSel, rowSel) {
-        const filterDiv = document.querySelector(filterSel);
-        const name = filterDiv.querySelector("input[name=name]").value.toLowerCase();
-        const area = filterDiv.querySelector("select[name=area]").value.toLowerCase();
-        const nivel = filterDiv.querySelector("select[name=nivel]").value.toLowerCase();
-        const ediciones = filterDiv.querySelector("input[name=ediciones]").value.toLowerCase();
-        
-        const valueAt = (row, i) => row.children[i].innerText || row.children[i].textContent;
-        
-        for (let r of document.querySelectorAll(rowSel)) {
-            let ok = true;
-            for (let [f, col] of 
-                [[name, 0], [area, 1], [nivel, 2], [ediciones, 3]]) {
-                    if (f == '' || ! ok) continue;
+
+    <script>
+
+
+        function borrarfiltrosCourses() {
+            filter = document.getElementById("filter-in-courses");
+            filter.querySelectorAll("input").forEach(e => {
+                e.value = "";
+            });
+
+            let select = filter.querySelectorAll("select");
+            select.forEach(e => e.querySelector("option").selected = true);
+            advancedCourseFilter("#filter-in-courses", ".course-table-row");
+        }
+
+        function borrarfiltrosUser() {
+            filter = document.getElementById("filter-in-users");
+            filter.querySelectorAll("input").forEach(e => {
+                e.value = "";
+            });
+
+            let select = filter.querySelector("select");
+            select.querySelector("option").selected = true;
+            advancedUserFilter("#filter-in-users", ".user-table-row");
+        }
+
+        function advancedUserFilter(filterSel, rowSel) {
+            const filterDiv = document.querySelector(filterSel);
+            const name = filterDiv.querySelector("input[name=name]").value.toLowerCase();
+            const dni = filterDiv.querySelector("input[name=dni]").value.toLowerCase();
+            const email = filterDiv.querySelector("input[name=email]").value.toLowerCase();
+            const role = filterDiv.querySelector("select[name=role]").value.toLowerCase();
+
+            const valueAt = (row, i) => row.children[i].innerText || row.children[i].textContent;
+
+            for (let r of document.querySelectorAll(rowSel)) {
+                let ok = true;
+                for (let [f, col] of
+                    [[name, 0], [role, 1], [email, 2], [dni, 3]]) {
+                    if (f == '' || !ok) continue;
                     const v = valueAt(r, col).toLowerCase();
                     console.log(v, f, col, v.indexOf(f));
                     if (v.indexOf(f) == -1) ok = false;
+                }
+                r.style.display = ok ? '' : 'none';
             }
-            r.style.display = ok ? '' : 'none';
         }
-    }
-    document.querySelectorAll("#filter-in-courses input, #filter-in-courses select").forEach(o =>
-        o.addEventListener('input', e => {
-            console.log("filtrando");
-            advancedCourseFilter("#filter-in-courses", ".course-table-row");
-        }));
+        document.querySelectorAll("#filter-in-users input, #filter-in-users select").forEach(o =>
+            o.addEventListener('input', e => {
+                console.log("filtrando");
+                advancedUserFilter("#filter-in-users", ".user-table-row");
+            }));
+
+        function advancedCourseFilter(filterSel, rowSel) {
+            const filterDiv = document.querySelector(filterSel);
+            const name = filterDiv.querySelector("input[name=name]").value.toLowerCase();
+            const area = filterDiv.querySelector("select[name=area]").value.toLowerCase();
+            const nivel = filterDiv.querySelector("select[name=nivel]").value.toLowerCase();
+            const ediciones = filterDiv.querySelector("input[name=ediciones]").value.toLowerCase();
+
+            const valueAt = (row, i) => row.children[i].innerText || row.children[i].textContent;
+
+            for (let r of document.querySelectorAll(rowSel)) {
+                let ok = true;
+                for (let [f, col] of
+                    [[name, 0], [area, 1], [nivel, 2], [ediciones, 3]]) {
+                    if (f == '' || !ok) continue;
+                    const v = valueAt(r, col).toLowerCase();
+                    console.log(v, f, col, v.indexOf(f));
+                    if (v.indexOf(f) == -1) ok = false;
+                }
+                r.style.display = ok ? '' : 'none';
+            }
+        }
+        document.querySelectorAll("#filter-in-courses input, #filter-in-courses select").forEach(o =>
+            o.addEventListener('input', e => {
+                console.log("filtrando");
+                advancedCourseFilter("#filter-in-courses", ".course-table-row");
+            }));
     </script>
 </body>
 
