@@ -89,6 +89,10 @@ function update() {
 
         E.bindSortColumn("tr>th");
 
+        //creamos los filtros de las busquedas avanzadas
+        U.insertScript(V.usersScript())
+        U.insertScript(V.coursesScript())
+
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-users", "#search-in-users-input", "#filter-in-users")
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-courses", "#search-in-courses-input", "#filter-in-courses")
 

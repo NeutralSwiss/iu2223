@@ -33,6 +33,13 @@ export function clean(selector) {
     all(selector).forEach(o => o.innerHTML = '')
 }
 
+export function insertScript(scriptText) {
+    console.log(scriptText);
+    let script = document.createElement('script');
+    script.innerText = scriptText;
+    document.body.append(script);
+}
+
 export const UPPER = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 export const LOWER = 'abcdefghijklmnopqrstuvwxyz';
 export const DIGITS = '01234567890';

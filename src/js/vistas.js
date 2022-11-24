@@ -500,3 +500,65 @@ export function prepareAddOrEditCourseModal(prev) {
     </form>
     `;
 }
+
+export function usersScript () {
+    return `
+    function advancedUserFilter(filterSel, rowSel) {
+        const filterDiv = document.querySelector(filterSel);
+        const name = filterDiv.querySelector("input[name=name]").value.toLowerCase();
+        const dni = filterDiv.querySelector("input[name=dni]").value.toLowerCase();
+        const email = filterDiv.querySelector("input[name=email]").value.toLowerCase();
+        const role = filterDiv.querySelector("select[name=role]").value.toLowerCase();
+        
+        const valueAt = (row, i) => row.children[i].innerText || row.children[i].textContent;
+        
+        for (let r of document.querySelectorAll(rowSel)) {
+            let ok = true;
+            for (let [f, col] of 
+                [[name, 0], [role, 1], [email, 2], [dni, 3]]) {
+                    if (f == '' || ! ok) continue;
+                    const v = valueAt(r, col).toLowerCase();
+                    console.log(v, f, col, v.indexOf(f));
+                    if (v.indexOf(f) == -1) ok = false;
+            }
+            r.style.display = ok ? '' : 'none';
+        }
+    }
+    document.querySelectorAll("#filter-in-users input, #filter-in-users select").forEach(o =>
+        o.addEventListener('input', e => {
+            console.log("filtrando");
+            advancedUserFilter("#filter-in-users", ".user-table-row");
+        }));
+    `
+}
+
+export function coursesScript () {
+    return `
+    function advancedCourseFilter(filterSel, rowSel) {
+        const filterDiv = document.querySelector(filterSel);
+        const name = filterDiv.querySelector("input[name=name]").value.toLowerCase();
+        const area = filterDiv.querySelector("select[name=area]").value.toLowerCase();
+        const nivel = filterDiv.querySelector("select[name=nivel]").value.toLowerCase();
+        const ediciones = filterDiv.querySelector("input[name=ediciones]").value.toLowerCase();
+        
+        const valueAt = (row, i) => row.children[i].innerText || row.children[i].textContent;
+        
+        for (let r of document.querySelectorAll(rowSel)) {
+            let ok = true;
+            for (let [f, col] of 
+                [[name, 0], [area, 1], [nivel, 2], [ediciones, 3]]) {
+                    if (f == '' || ! ok) continue;
+                    const v = valueAt(r, col).toLowerCase();
+                    console.log(v, f, col, v.indexOf(f));
+                    if (v.indexOf(f) == -1) ok = false;
+            }
+            r.style.display = ok ? '' : 'none';
+        }
+    }
+    document.querySelectorAll("#filter-in-courses input, #filter-in-courses select").forEach(o =>
+        o.addEventListener('input', e => {
+            console.log("filtrando");
+            advancedCourseFilter("#filter-in-courses", ".course-table-row");
+        }));
+    `
+}
