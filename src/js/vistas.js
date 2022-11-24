@@ -75,10 +75,39 @@ export function createUserTable(users) {
 
     <div class="row">
         <div class="col md-auto input-group">
-            <input id="search-in-users-input" type="search" class="form-control" placeholder="Filtrar" />
+            <input id="search-in-users-input" type="search" class="form-control" placeholder="Filtrar">
             <span class="input-group-text" id="search-in-users-button">🔍</span>
         </div>
-        <div class="col text-end">${botonNuevoUsuario}</div>
+        <div class="col">
+            <button id="search-advanced-toggle-users" title="Búsqueda avanzada" class="btn btn-outline-secondary">🔍🔍</button>
+        </div>
+        <div class="col text-end">
+            <button title="Crea un nuevo usuario" class="add-user btn btn-outline-primary">➕</button>
+        </div>
+    </div>
+
+    <div id="filter-in-users" class="m-2 p-2 border border-2 rounded">
+        <div class="row">
+            <div class="col-8">
+                <input type="search" name="name" class="m-1 form-control form-control-sm" name="" placeholder="Nombre o fragmento">
+            </div>
+            <div class="col-4">
+                <input type="search" name="dni" class="m-1 form-control form-control-sm" placeholder="DNI o fragmento">    
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <input type="search" name="email" class="m-1 form-control form-control-sm" placeholder="correo o fragmento">
+            </div>
+            <div class="col-6">
+                <select name="role" class="m-1 form-select form-select-sm">
+                    <option value="">(ninguno)</option>
+                    <option value="admin">admin</option>
+                    <option value="alumno">alumno</option>
+                    <option value="profesor">profesor</option>
+                </select>                
+            </div>
+        </div>
     </div>
 
     <table class="table">
@@ -157,10 +186,44 @@ export function createCoursesTable(courses) {
 
     <div class="row">
         <div class="col md-auto input-group">
-            <input id="search-in-courses-input" type="search" class="form-control" placeholder="Filtrar" />
+            <input id="search-in-courses-input" type="search" class="form-control" placeholder="Filtrar">
             <span class="input-group-text" id="search-in-users-button">🔍</span>
         </div>
-        <div class="col text-end">${botonNuevoCurso}</div>
+        <div class="col">
+            <button id="search-advanced-toggle-courses" title="Búsqueda avanzada" class="btn btn-outline-secondary">🔍🔍</button>
+        </div>
+        <div class="col text-end">
+            <button title="Crea un nuevo curso" class="add-course btn btn-outline-primary">➕</button>
+        </div>
+    </div>
+
+    <div id="filter-in-courses" class="m-2 p-2 border border-2 rounded">
+        <div class="row">
+            <div class="col-8">
+                <input type="search" name="name" class="m-1 form-control form-control-sm" name="" placeholder="Nombre o fragmento">
+            </div>
+            <div class="col-4">
+                <select name="area" class="m-1 form-select form-select-sm">
+                    <option value="">(ninguno)</option>
+                    <option value="ofimática">ofimática</option>
+                    <option value="internet">internet</option>
+                    <option value="tec. informáticas">tec. informáticas</option>
+                </select>       
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <select name="nivel" class="m-1 form-select form-select-sm">
+                    <option value="">(ninguno)</option>
+                    <option value="iniciación">iniciación</option>
+                    <option value="especialización">especialización</option>
+                    <option value="generalista">generalista</option>
+                </select>                
+            </div>
+            <div class="col-6">
+                <input type="search" name="ediciones" class="m-1 form-control form-control-sm" placeholder="ediciones">
+            </div>
+        </div>
     </div>
 
     <table class="table">
