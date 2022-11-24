@@ -34,7 +34,8 @@ E.bindSearch("#search-in-user-editions-input", ".user-edition-table-row");
 // añade ordenación
 E.bindSortColumn("tr>th");
 
-E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle", "#search-in-users-input", "#filter-in-users")
+E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-users", "#search-in-users-input", "#filter-in-users")
+E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-courses", "#search-in-courses-input", "#filter-in-courses")
 
 // cosas que exponemos para poder usarlas desde la consola
 window.Cm = Cm;
