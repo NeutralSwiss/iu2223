@@ -51,11 +51,11 @@ function userRow(user, editions) {
         <td>
         <div class="btn-group">
             <button id="d${user.id}" title="Muestra las ediciones en las que figura ${user.name}" 
-                class="edition-link btn btn-outline-secondary btn-sm">👁️</button>        
+                class="edition-link btn btn-secondary btn-sm">👁️</button>        
             <button title="Edita el usuario ${user.name}" 
-                class="set-user btn btn-outline-primary btn-sm">✏️</button>
+                class="set-user btn custom-button btn-sm">✏️</button>
             <button title="Elimina a ${user.name} del sistema, y de todas las ediciones" 
-                class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>
+                class="rm-fila btn delete-button btn-sm">🗑️</button>
         </div>
         </td>
     </tr>
@@ -68,7 +68,7 @@ export function createUserTable(users) {
 
     const botonNuevoUsuario = `
         <button title="Crea un nuevo usuario" 
-            class="add-user btn btn-outline-primary">➕</button>`
+            class="add-user btn create-button">➕</button>`
 
     return `
     <h4 class="mt-3">Usuarios</h4>
@@ -79,10 +79,10 @@ export function createUserTable(users) {
             <span class="input-group-text" id="search-in-users-button">🔍</span>
         </div>
         <div class="col">
-            <button id="search-advanced-toggle-users" title="Búsqueda avanzada" class="btn btn-outline-secondary">🔍🔍</button>
+            <button id="search-advanced-toggle-users" title="Búsqueda avanzada" class="btn btn-light mx-2">🔍🔍</button>
         </div>
         <div class="col text-end">
-            <button title="Crea un nuevo usuario" class="add-user btn btn-outline-primary">➕</button>
+            <button title="Crea un nuevo usuario" class="add-user btn create-button mx-2">➕</button>
         </div>
     </div>
 
@@ -97,7 +97,7 @@ export function createUserTable(users) {
         </div>
         <div class="row">
             <div class="col-6">
-                <input type="search" name="email" class="m-1 form-control form-control-sm" placeholder="correo o fragmento">
+                <input type="search" name="email" class="m-1 form-control form-control-sm" placeholder="Correo o fragmento">
             </div>
             <div class="col-6">
                 <select name="role" class="m-1 form-select form-select-sm">
@@ -108,6 +108,7 @@ export function createUserTable(users) {
                 </select>                
             </div>
         </div>
+        <button type="button" class="btn delete-button btn-sm m-1" onclick="borrarfiltrosUser()">Borrar filtros</button>
     </div>
 
     <table class="table">
@@ -144,7 +145,7 @@ function ratingForEdition(results, e) {
 function courseRow(course, editions, results) {
     const ratings = editions.filter(o => o.course == course.id).map(e =>
         `<button id="d${e.id}" data-id="${e.id}" 
-            class="edition-link btn btn-outline-secondary btn-sm" 
+            class="edition-link btn btn-secondary btn-sm" 
             title="${ratingForEdition(results, e)}">${e.year}</button>`
     );
 
@@ -158,15 +159,15 @@ function courseRow(course, editions, results) {
         <td><span class="${levelClasses[course.level]}">${course.level}</span></td>
         <td>${ratings.join(' ')} 
             <button data-year="${year}" title="Crea una edición ${year} para el curso ${course.name}" 
-                class="add-edition btn btn-outline-primary btn-sm" 
+                class="add-edition btn create-button btn-sm" 
                 ${hasCurrentEdition ? "":"disabled"}>➕</button>
         </td>
         <td>
         <div class="btn-group">
             <button title="Edita el curso ${course.name}" 
-                class="set-course btn btn-outline-primary btn-sm">✏️</button>
+                class="set-course btn custom-button btn-sm">✏️</button>
             <button title="Elimina el curso ${course.name} del sistema, y todas sus ediciones" 
-                class="rm-fila btn btn-outline-danger btn-sm">🗑️</button>                
+                class="rm-fila btn delete-button btn-sm">🗑️</button>                
         </div>
         </td>        
     </tr>
@@ -179,7 +180,7 @@ export function createCoursesTable(courses) {
     const filas = courses.map(o => courseRow(o, editions, results)).join('');
     const botonNuevoCurso = `
         <button title="Crea un nuevo curso" 
-            class="add-course btn btn-outline-primary">➕</button>`
+            class="add-course btn create-button">➕</button>`
 
     return `
     <h4 class="mt-3">Cursos</h4>
@@ -190,10 +191,10 @@ export function createCoursesTable(courses) {
             <span class="input-group-text" id="search-in-users-button">🔍</span>
         </div>
         <div class="col">
-            <button id="search-advanced-toggle-courses" title="Búsqueda avanzada" class="btn btn-outline-secondary">🔍🔍</button>
+            <button id="search-advanced-toggle-courses" title="Búsqueda avanzada" class="btn btn-light mx-2">🔍🔍</button>
         </div>
         <div class="col text-end">
-            <button title="Crea un nuevo curso" class="add-course btn btn-outline-primary">➕</button>
+            <button title="Crea un nuevo curso" class="add-course btn create-button mx-2">➕</button>
         </div>
     </div>
 
@@ -224,6 +225,7 @@ export function createCoursesTable(courses) {
                 <input type="search" name="ediciones" class="m-1 form-control form-control-sm" placeholder="ediciones">
             </div>
         </div>
+        <button type="button" class="btn delete-button btn-sm mx-1" onclick="borrarfiltrosCourses()">Borrar filtros</button>
     </div>
 
     <table class="table">
@@ -250,7 +252,7 @@ function studentRow(user, edition, results) {
         <td class="text-end">${nota != null ? nota : '?'}</td>
         <td>&nbsp;
             <button title="Desmatricula a ${user.name} de ${edition.name}"                 
-                class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                class="rm-from-edition btn delete-button btn-sm">🗑️</button>
         </td>
     </tr>
     `;
@@ -264,7 +266,7 @@ function teacherRow(user, edition, results) {
         <td>${user.dni}</td>
         <td>&nbsp;
             <button title="Hace que ${user.name} deje de ser profesor de ${edition.name}" 
-                class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                class="rm-from-edition btn delete-button btn-sm">🗑️</button>
         </td>
     </tr>
     `;
@@ -280,15 +282,15 @@ export function createDetailsForEdition(edition) {
     const botonBorrado = `
         <button title="Elimina la edición ${edition.name} del sistema" 
             data-id="${edition.id}"
-            class="rm-edition btn btn-outline-danger">🗑️</button>`
+            class="rm-edition btn delete-button">🗑️</button>`
 
     const botonMatricula = (tipo) => `
         <button title="Matricula un ${tipo} para ${edition.name}" 
             data-id="${edition.id}"
-            class="add-${tipo}-to-edition btn btn-outline-primary">➕</button>`
+            class="add-${tipo}-to-edition btn create-button">➕</button>`
 
     return `
-    <div class="row">
+    <div class="row mt-3">
         <div class="col md-auto"><h4 class="md-auto"><i>${edition.name}</i></h4></div>
         <div class="col text-end">${botonBorrado}</div>
     </div>
@@ -355,9 +357,9 @@ function userEditionRow(edition, user, results) {
         <td>
         <div class="btn-group">
             <button title="Cambia nota y/o valoración para ${user.name} en ${edition.name}" 
-                class="set-result btn btn-outline-secondary btn-sm">✏️</button>
+                class="set-result btn custom-button btn-sm">✏️</button>
             <button title="Saca a ${user.name} de ${edition.name}" 
-                class="rm-from-edition btn btn-outline-danger btn-sm">🗑️</button>
+                class="rm-from-edition btn delete-button btn-sm">🗑️</button>
         </div>
         </td>
     </tr>
@@ -377,11 +379,11 @@ export function createDetailsForUser(user) {
     const botonMatricula = (tipo) => `
         <button title="Matricula un ${tipo} para ${edition.name}" 
             data-id="${edition.id}"
-            class="add-${tipo}-to-edition btn btn-outline-primary">➕</button>`
+            class="add-${tipo}-to-edition btn create-button">➕</button>`
 
     return `
     <div class="row">
-        <div class="col md-auto"><h4 class="md-auto"><i>${user.name}</i></h4></div>
+        <div class="col md-auto mt-4"><h4 class="md-auto"><i>${user.name}</i></h4></div>
     </div>
     <h5 class="mt-3">Ediciones donde participa</h5>
     <div class="row">
@@ -529,6 +531,17 @@ export function usersScript () {
             console.log("filtrando");
             advancedUserFilter("#filter-in-users", ".user-table-row");
         }));
+
+    function borrarfiltrosUser() {
+        filter = document.getElementById("filter-in-users");
+        filter.querySelectorAll("input").forEach(e => {
+            e.value = "";
+        });
+
+        let select = filter.querySelector("select");
+        select.querySelector("option").selected = true;
+        advancedUserFilter("#filter-in-users", ".user-table-row");
+    }
     `
 }
 
@@ -560,5 +573,16 @@ export function coursesScript () {
             console.log("filtrando");
             advancedCourseFilter("#filter-in-courses", ".course-table-row");
         }));
+
+    function borrarfiltrosCourses() {
+        filter = document.getElementById("filter-in-courses");
+        filter.querySelectorAll("input").forEach(e => {
+            e.value = "";
+        });
+
+        let select = filter.querySelectorAll("select");
+        select.forEach(e => e.querySelector("option").selected = true);
+        advancedCourseFilter("#filter-in-courses", ".course-table-row");
+    }
     `
 }

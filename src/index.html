@@ -7,6 +7,7 @@
 
     <!-- Normalmente accedes a un CDN; aquí uso una copia local -->
     <link href="css/bootstrap-5.2.2.css" rel="stylesheet">
+    <link href="css/hoja.css" rel="stylesheet" >
 
     <!-- Esto aparece como título de la ventana o pestaña en el navegador -->
     <title>CursoManager</title>
@@ -15,23 +16,19 @@
 <body>
 
     <!-- Navbar principal -->
-    <nav class="navbar navbar-expand-lg bg-light">
+    <nav class="navbar navbar-expand-lg custom-nav">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">CursoManager</a>
+            <a class="navbar-brand text-white" href="#">CursoManager</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Perfil
-                        </a>
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Perfil</a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#">Admin</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
+                            <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Profesor</a></li>
                             <li><a class="dropdown-item" href="#">Alumno</a></li>
                         </ul>
@@ -43,23 +40,23 @@
 
     <!-- Div principal; container-fluid expande el contenedor para que ocupe todo el espacio disponible -->
     <div class="container-fluid">
-        <div class="row">
+        <div class="row mx-5 mt-3">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios-tab-pane" type="button" role="tab" aria-controls="usuarios-tab-pane" aria-selected="true">👥 Usuarios</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="cursos-tab" data-bs-toggle="tab" data-bs-target="#cursos-tab-pane" type="button" role="tab" aria-controls="cursos-tab-pane" aria-selected="false">🎓 Cursos</button>
+                </li>
+            </ul>
             <div class="col-md-6">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="usuarios-tab" data-bs-toggle="tab" data-bs-target="#usuarios-tab-pane" type="button" role="tab" aria-controls="usuarios-tab-pane" aria-selected="true">👥 Usuarios</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="cursos-tab" data-bs-toggle="tab" data-bs-target="#cursos-tab-pane" type="button" role="tab" aria-controls="cursos-tab-pane" aria-selected="false">🎓 Cursos</button>
-                    </li>
-                </ul>
-                <div class="tab-content overflow-scroll vh-100" id="myTabContent">
+                <div class="tab-content overflow-auto vh-100 px-3" id="myTabContent">
                     <div class="tab-pane fade show active" id="usuarios-tab-pane" role="tabpanel" aria-labelledby="usuarios-tab" tabindex="0">
                         <div id="users">
 
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="cursos-tab-pane" role="tabpanel" aria-labelledby="cursos-tab" tabindex="0">
+                    <div class="tab-pane fade overflow-auto vh-100 px-3" id="cursos-tab-pane" role="tabpanel" aria-labelledby="cursos-tab" tabindex="0">
                         <div id="courses">
 
                         </div>
@@ -67,7 +64,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div id="details" class="overflow-scroll vh-100">
+                <div id="details">
 
                 </div>
             </div>
