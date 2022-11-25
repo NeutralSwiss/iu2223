@@ -436,7 +436,7 @@ export function prepareAddOrEditUserModal(prev) {
     return `
     <form class="row g-3">
             <div class="col-md-12">
-                <input type="text" class="form-control" name="name" placeholder="Nombre" 
+                <input type="text" class="form-control mb-3" name="name" placeholder="Nombre" 
                 ${prev?.name ? 'value="'+prev.name+'"' : ''} required>
             </div>
 

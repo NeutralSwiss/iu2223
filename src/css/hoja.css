@@ -55,3 +55,7 @@ th {
   background-color: #6b1f1f;
   color: white;
 }
+
+.modal-content {
+  background-color:rgb(56, 56, 83);
+}
