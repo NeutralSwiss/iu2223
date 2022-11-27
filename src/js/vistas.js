@@ -318,8 +318,40 @@ export function createDetailsForEdition(edition) {
             <input id="search-in-students-input" type="search" class="form-control" placeholder="Filtrar" />
             <span class="input-group-text">🔍</span>
         </div>
-        <div class="col text-end">${botonMatricula("alumno")}</div>
+        <div class="col">
+        <button id="search-advanced-toggle-student" title="Búsqueda avanzada"
+            class="btn btn-light">🔍🔍</button>
+        </div>
+        <div class="col text-end">
+        <button title="Matricula un alumno para Análisis con Python (2021-22)" data-id="121"
+            class="add-alumno-to-edition btn create-button">➕</button>
+        </div>
     </div>
+
+    <div id="filter-in-student" class="m-2 p-2 border border-2 rounded">
+        <div class="row">
+            <div class="col-8">
+                <input type="search" name="name" class="m-1 form-control form-control-sm" name=""
+                    placeholder="Nombre">
+            </div>
+            <div class="col-4">
+                <input type="search" name="dni" class="m-1 form-control form-control-sm"
+                    placeholder="DNI">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <input type="search" name="email" class="m-1 form-control form-control-sm"
+                    placeholder="Correo">
+            </div>
+            <div class="col-6">
+                <input type="number" name="grade" class="m-1 form-control form-control-sm" min="0" max="10"
+                    placeholder="Nota">
+            </div>
+        </div>
+        <button type="button" class="btn delete-button btn-sm btn-block mx-1" onclick="borrarfiltrosStudent()">Borrar filtros</button>
+    </div>
+
     <table class="table w-100 ml-4">
     <tr>
         <th>Nombre</th>
@@ -503,7 +535,7 @@ export function prepareAddOrEditCourseModal(prev) {
     `;
 }
 
-export function usersScript () {
+export function usersScript() {
     return `
     function advancedUserFilter(filterSel, rowSel) {
         const filterDiv = document.querySelector(filterSel);
@@ -545,7 +577,7 @@ export function usersScript () {
     `
 }
 
-export function coursesScript () {
+export function coursesScript() {
     return `
     function advancedCourseFilter(filterSel, rowSel) {
         const filterDiv = document.querySelector(filterSel);
@@ -583,6 +615,48 @@ export function coursesScript () {
         let select = filter.querySelectorAll("select");
         select.forEach(e => e.querySelector("option").selected = true);
         advancedCourseFilter("#filter-in-courses", ".course-table-row");
+    }
+    `
+}
+
+export function studentsScript() {
+    return `
+    function advancedStudentFilter(filterSel, rowSel) {
+        const filterDiv = document.querySelector(filterSel);
+        const name = filterDiv.querySelector("input[name=name]").value.toLowerCase();
+        const dni = filterDiv.querySelector("input[name=dni]").value.toLowerCase();
+        const email = filterDiv.querySelector("input[name=email]").value.toLowerCase();
+        const grade = filterDiv.querySelector("input[name=grade]").value.toLowerCase();
+
+        const valueAt = (row, i) => row.children[i].innerText || row.children[i].textContent;
+
+        for (let r of document.querySelectorAll(rowSel)) {
+            let ok = true;
+            for (let [f, col] of
+                [[name, 0], [email, 1], [dni, 2], [grade, 3]]) {
+                if (f == '' || !ok) continue;
+                const v = valueAt(r, col).toLowerCase();
+                console.log(v, f, col, v.indexOf(f));
+                if (v.indexOf(f) == -1) ok = false;
+            }
+            r.style.display = ok ? '' : 'none';
+        }
+    }
+    document.querySelectorAll("#filter-in-student input, #filter-in-student select").forEach(o =>
+        o.addEventListener('input', e => {
+            console.log("filtrando");
+            advancedStudentFilter("#filter-in-student", ".student-table-row");
+        }));
+
+    function borrarfiltrosStudent() {
+        filter = document.getElementById("filter-in-student");
+        filter.querySelectorAll("input").forEach(e => {
+            e.value = "";
+        });
+        
+        let select = filter.querySelectorAll("select");
+        select.forEach(e => e.querySelector("option").selected = true);
+        advancedStudentFilter("#filter-in-student", ".student-table-row");
     }
     `
 }

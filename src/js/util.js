@@ -34,7 +34,6 @@ export function clean(selector) {
 }
 
 export function insertScript(scriptText) {
-    console.log(scriptText);
     let script = document.createElement('script');
     script.innerText = scriptText;
     document.body.append(script);

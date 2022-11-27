@@ -92,9 +92,11 @@ function update() {
         //creamos los filtros de las busquedas avanzadas
         U.insertScript(V.usersScript())
         U.insertScript(V.coursesScript())
+        U.insertScript(V.studentsScript())
 
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-users", "#search-in-users-input", "#filter-in-users")
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-courses", "#search-in-courses-input", "#filter-in-courses")
+        E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-student", "#search-in-students-input", "#filter-in-student")
 
     } catch (e) {
         console.log('Error actualizando', e);
