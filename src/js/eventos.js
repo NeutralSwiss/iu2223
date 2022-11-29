@@ -26,30 +26,6 @@ export function bindDetails(clickSelector, detailsSelector, htmlGenerationFn, li
     }))
 }
 
-
-export function bindRmFromEdition(clickSelector, callback) {
-    U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
-        const userId = e.target.closest('tr').dataset.userId;
-        const editionId = e.target.closest('tr').dataset.editionId;
-        console.log(e, userId, editionId);
-        const edition = Cm.resolve(editionId);
-        edition.students = edition.students.filter(o => o != userId);
-        edition.teachers = edition.students.filter(o => o != userId);
-        Cm.setEdition(edition);
-        e.target.closest("tr").remove();
-        callback();
-    }));
-}
-
-export function bindRmEditionDetails(clickSelector, callback) {
-    U.one(clickSelector).addEventListener('click', e => {
-        const id = e.target.dataset.id;
-        console.log(e, id);
-        Cm.rmEdition(id);
-        callback();
-    });
-}
-
 export function bindAddEditionToCourse(clickSelector, callback) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
         const id = e.target.closest("tr").dataset.id;
@@ -57,16 +33,6 @@ export function bindAddEditionToCourse(clickSelector, callback) {
         console.log(e, id, year);
         Cm.addEdition(Cm.resolve(id), year);
         callback();
-    }));
-}
-
-export function bindRmCourseRow(clickSelector) {
-    U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
-        const row = e.target.closest("tr");
-        const id = row.dataset.id;
-        console.log(e, id);
-        Cm.rmCourse(id);
-        row.remove();
     }));
 }
 
@@ -106,8 +72,82 @@ export function bindAddUserToEdition(clickSelector, formTitleSelector, formSelec
     });
 };
 
-//"#users button.rm-fila", "#cmDeleteModal", () => modalDelete, (user) => `Eliminando user <i>${user.name}</i>`, () => update()
-export function bindRmUserRow(clickSelector, formTitleSelector, formDeleteSelector, modalFn, formTitleFn, callback) {
+export function bindRmEditionDetails(clickSelector, formTitleSelector, formSelector, formDeleteSelector, modalFn, formTitleFn, formContentsFn, callback) {
+    U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
+        const id = e.target.dataset.id;
+        console.log(id)
+        const edition = Cm.resolve(id); 
+
+
+        modalFn().show();
+        const form = U.one(formSelector);
+        U.one(formTitleSelector).innerHTML = formTitleFn(edition);
+        form.innerHTML = formContentsFn(edition);
+        const deleteButton = U.one(formDeleteSelector);
+        const deleteListener = ae => {
+            Cm.rmEdition(id);
+            modalFn().hide();
+            callback();
+        }
+        deleteButton.addEventListener('click', deleteListener);
+    }));
+    /*
+    U.one(clickSelector).addEventListener('click', e => {
+        const id = e.target.dataset.id;
+        console.log(e, id);
+        Cm.rmEdition(id);
+        callback();
+    });*/
+}
+
+export function bindRmFromEdition(clickSelector, formTitleSelector, formSelector, formDeleteSelector, modalFn, formTitleFn, formContentsFn, callback) {
+    U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
+        const userId = e.target.closest('tr').dataset.userId;
+        const editionId = e.target.closest('tr').dataset.editionId;
+        const user = userId ? Cm.resolve(userId) : undefined; 
+
+        const edition = Cm.resolve(editionId);
+        edition.students = edition.students.filter(o => o != userId);
+        edition.teachers = edition.students.filter(o => o != userId);
+
+        modalFn().show();
+        const form = U.one(formSelector);
+        U.one(formTitleSelector).innerHTML = formTitleFn(edition,user);
+        form.innerHTML = formContentsFn(user);
+        const deleteButton = U.one(formDeleteSelector);
+        const deleteListener = ae => {
+            modalFn().hide();
+            Cm.setEdition(edition);
+            e.target.closest("tr").remove();
+            callback();
+        }
+        deleteButton.addEventListener('click', deleteListener);
+    }));
+}
+
+export function bindRmCourseRow(clickSelector, formTitleSelector, formSelector, formDeleteSelector, modalFn, formTitleFn, formContentsFn, callback) {
+    U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
+        const id = e.target.closest("tr") ?
+            e.target.closest("tr").dataset.id :
+            undefined;
+        const user = id ? Cm.resolve(id) : undefined;   
+        
+        modalFn().show();
+        const form = U.one(formSelector);
+        U.one(formTitleSelector).innerHTML = formTitleFn(user);
+        form.innerHTML = formContentsFn(user);
+        const deleteButton = U.one(formDeleteSelector);
+        const deleteListener = ae => {
+            const row = e.target.closest("tr");
+            Cm.rmCourse(id);
+            row.remove();
+            modalFn().hide();
+        }
+        deleteButton.addEventListener('click', deleteListener);
+    }));
+}
+
+export function bindRmUserRow(clickSelector, formTitleSelector, formSelector, formDeleteSelector, modalFn, formTitleFn, formContentsFn, callback) {
 
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
         const id = e.target.closest("tr") ?
@@ -116,7 +156,9 @@ export function bindRmUserRow(clickSelector, formTitleSelector, formDeleteSelect
         const user = id ? Cm.resolve(id) : undefined;
 
         modalFn().show();
+        const form = U.one(formSelector);
         U.one(formTitleSelector).innerHTML = formTitleFn(user);
+        form.innerHTML = formContentsFn(user);
         const deleteButton = U.one(formDeleteSelector);
         const deleteListener = ae => {
             const row = e.target.closest("tr");

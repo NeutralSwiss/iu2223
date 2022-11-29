@@ -39,10 +39,11 @@ function update() {
 
         // y añadimos manejadores para los eventos de los elementos recién creados
 
-        E.bindRmCourseRow("#courses button.rm-fila");
+        E.bindRmCourseRow("#courses button.rm-fila", "#modalDelete .modal-title", "#cmDeleteForm", "#cmDeleteModal", () => modalDelete,
+        (course) => `Eliminando curso <i>${course.name}</i>`, () => `Se eliminara el curso junto a todas sus ediciones y notas de los estudiantes de los mismos, desea continuar?`, () => update());
 
-        E.bindRmUserRow("#users button.rm-fila", "#modalDelete .modal-title", "#cmDeleteModal", () => modalDelete,
-        (user) => `Eliminando user <i>${user.name}</i>`, () => update());
+        E.bindRmUserRow("#users button.rm-fila", "#modalDelete .modal-title", "#cmDeleteForm", "#cmDeleteModal", () => modalDelete,
+        (user) => `Eliminando user <i>${user.name}</i>`, () => `Se eliminara el usuario de todas las ediciones junto a sus datos y notas, desea continuar?` ,() => update());
 
         E.bindAddEditionToCourse(".add-edition", () => update());
 
@@ -50,7 +51,8 @@ function update() {
             (id) => V.createDetailsForEdition(Cm.resolve(id)),
             (id) => {
                 const edition = Cm.resolve(id);
-                E.bindRmEditionDetails(".rm-edition", update);
+                E.bindRmEditionDetails(".rm-edition", "#modalDelete .modal-title", "#cmDeleteForm", "#cmDeleteModal", () => modalDelete,
+                (edition) => `Eliminando edicion <i>${edition.name}</i>`, () => `Se eliminara la ediciom junto a todas las notas de todos los estudiantes matriculados, desea continuar?`,() => update());
                 E.bindAddUserToEdition(".add-profesor-to-edition",
                     "#cmModal .modal-title", "#cmEditForm", "#cmAcceptModal", () => modalEdit,
                     () => `Añadiendo profesor a <i>${edition.name}</i>`,
@@ -71,7 +73,11 @@ function update() {
             }
         )
 
-        E.bindRmFromEdition(".rm-from-edition", () => update());
+        E.bindRmFromEdition(".rm-from-edition", "#modalDelete .modal-title", "#cmDeleteForm", "#cmDeleteModal", () => modalDelete,
+        (edition, user) => {
+            return `Eliminando usuario <i>${user.name}</i> de la edicion <i>${edition.name}</i>`},
+            () => `Se eliminaran las notas del usuario en esta edicion, desea continuar?`,() => update());
+
 
         E.bindAddOrEditUser(".add-user,.set-user",
             "#cmModal .modal-title", "#cmEditForm", "#cmAcceptModal", () => modalEdit,
