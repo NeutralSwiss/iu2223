@@ -70,16 +70,6 @@ export function bindRmCourseRow(clickSelector) {
     }));
 }
 
-export function bindRmUserRow(clickSelector) {
-    U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
-        const row = e.target.closest("tr");
-        const id = row.dataset.id;
-        console.log(e, id);
-        Cm.rmUser(id);
-        row.remove();
-    }));
-}
-
 export function bindAddUserToEdition(clickSelector, formTitleSelector, formSelector, formAcceptSelector,
     modalFn, formTitleFn, formContentsFn, callback) {
 
@@ -115,6 +105,28 @@ export function bindAddUserToEdition(clickSelector, formTitleSelector, formSelec
         acceptButton.addEventListener('click', acceptListener);
     });
 };
+
+//"#users button.rm-fila", "#cmDeleteModal", () => modalDelete, (user) => `Eliminando user <i>${user.name}</i>`, () => update()
+export function bindRmUserRow(clickSelector, formTitleSelector, formDeleteSelector, modalFn, formTitleFn, callback) {
+
+    U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
+        const id = e.target.closest("tr") ?
+            e.target.closest("tr").dataset.id :
+            undefined;
+        const user = id ? Cm.resolve(id) : undefined;
+
+        modalFn().show();
+        U.one(formTitleSelector).innerHTML = formTitleFn(user);
+        const deleteButton = U.one(formDeleteSelector);
+        const deleteListener = ae => {
+            const row = e.target.closest("tr");
+            Cm.rmUser(id);
+            row.remove();
+            modalFn().hide();
+        }
+        deleteButton.addEventListener('click', deleteListener);
+    }));
+}
 
 export function bindAddOrEditUser(clickSelector, formTitleSelector, formSelector, formAcceptSelector,
     modalFn, formTitleFn, formContentsFn, callback) {

@@ -39,10 +39,12 @@ function update() {
 
         // y añadimos manejadores para los eventos de los elementos recién creados
 
-        E.bindRmCourseRow("#courses button.rm-fila")
-        E.bindRmUserRow("#users button.rm-fila")
+        E.bindRmCourseRow("#courses button.rm-fila");
 
-        E.bindAddEditionToCourse(".add-edition", () => update())
+        E.bindRmUserRow("#users button.rm-fila", "#modalDelete .modal-title", "#cmDeleteModal", () => modalDelete,
+        (user) => `Eliminando user <i>${user.name}</i>`, () => update());
+
+        E.bindAddEditionToCourse(".add-edition", () => update());
 
         E.bindDetails("#courses .edition-link", "#details",
             (id) => V.createDetailsForEdition(Cm.resolve(id)),
@@ -68,6 +70,7 @@ function update() {
                 update();
             }
         )
+
         E.bindRmFromEdition(".rm-from-edition", () => update());
 
         E.bindAddOrEditUser(".add-user,.set-user",
@@ -75,6 +78,7 @@ function update() {
             (user) => user ? `Editando <i>${user.name}</i>` : "Añadiendo usuario",
             (user) => V.prepareAddOrEditUserModal(user),
             () => update());
+
         E.bindAddOrEditCourse(".add-course,.set-course",
             "#cmModal .modal-title", "#cmEditForm", "#cmAcceptModal", () => modalEdit,
             (course) => course ? `Editando <i>${course.name}</i>` : "Añadiendo curso",
@@ -108,6 +112,7 @@ function update() {
 // No pongas código de este tipo en ningún otro sitio
 //
 const modalEdit = new bootstrap.Modal(document.querySelector('#cmModal'));
+const modalDelete = new bootstrap.Modal(document.querySelector('#modalDelete'));
 
 Cm.init()
 update()
