@@ -364,7 +364,7 @@ export function bindSetResults(clickSelector, callback) {
 export function bindSortColumn(clickSelector) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
         const th = e.target;
-        const table = th.closest('table');
+        const table = th.closest('tbody');
 
         // devuelve el valor en la columna i-esima
         // ver https://stackoverflow.com/a/49041392/15472
@@ -399,4 +399,71 @@ export function alternaBusquedaAvanzadaUsuarios(selBoton, selNormal, selAvanzada
             normal.style.display = visible ? '' : 'none';
         });
     avanzado.style.display = 'none';
+}
+
+/**
+ * Añade manejo de columna de selección a una tabla.
+ * 
+ * La tabla debe tener un checkbox de cabecera, y otro por fila, con el siguiente formato:
+ *         <th><input type="checkbox" name="toggle"/></td>
+ * 
+ *         <td><input type="checkbox" value="${user.id}" name="users"/></td>
+ *
+ * Cada vez que se cambie un checkbox, se enviará un evento de tipo evtName, capturable via
+ *       table.addEventListener(evtName, e => console.log(e.detail))
+ * También se podrá consultar la lista de seleccionados en table.dataset.selected
+ * 
+ * @param {*} selTabla 
+ * @param {*} evtName 
+ */
+export function bindCheckboxColumn(selTabla, evtName) {
+    const table = U.one(selTabla);
+    const toggle = table.querySelector("input[name=toggle]");
+    const rows = table.querySelectorAll('tr:nth-child(n+2)');
+
+    const visibleAndSelected = () => {
+        const visibleRows = [...rows].filter(r => r.style.display != 'none');
+        const checkedRows = visibleRows
+            .map(o => o.querySelector('input[type=checkbox]'))
+            .filter(r => r.checked);
+        table.dataset.selected = JSON.stringify(checkedRows.map(o => o.value));
+        if (evtName) table.dispatchEvent(new CustomEvent(evtName, { detail: table.dataset.selected }));
+        // lanza un evento que se puede capturar a partir de la tabla, escuchando por evtName
+        // ver https://developer.mozilla.org/en-US/docs/Web/Events/Creating_and_triggering_events        
+        return [visibleRows, checkedRows];
+    }
+
+    const updateToggleState = () => {
+        const [visibleRows, checkedRows] = visibleAndSelected()
+            // ver https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/checkbox
+        if (checkedRows.length == 0) {
+            toggle.checked = false;
+            toggle.indeterminate = false;
+        } else if (checkedRows.length == visibleRows.length) {
+            toggle.checked = true;
+            toggle.indeterminate = true;
+        } else {
+            toggle.checked = false;
+            toggle.indeterminate = true;
+        }
+    }
+
+    toggle.addEventListener('click', (e) => {
+        rows.forEach(row => {
+            if (row.style.display != 'none') {
+                row.querySelector('input[type=checkbox]').checked = toggle.checked;
+            }
+        })
+        visibleAndSelected()
+    });
+
+    rows.forEach(o => o
+        .querySelector('input[type=checkbox]')
+        .addEventListener('change', o => {
+            updateToggleState()
+        }))
+
+
+    // EJEMPLO DE CAPTURA DE EVENTO DE CAMBIO DE SELECCION - usalo en tu código
+    if (evtName) table.addEventListener(evtName, e => console.log(e.detail));
 }

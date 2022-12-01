@@ -108,10 +108,19 @@ function update() {
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-courses", "#search-in-courses-input", "#filter-in-courses")
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-student", "#search-in-students-input", "#filter-in-student")
 
+        E.bindCheckboxColumn("#users");
     } catch (e) {
         console.log('Error actualizando', e);
     }
 }
+
+// asociamos botones de prueba para guardar y restaurar estado
+U.one("#save").addEventListener('click', () => Cm.saveState());
+U.one("#clean").addEventListener('click', () => localStorage.clear());
+U.one("#restore").addEventListener('click', () => {
+    Cm.restoreState();
+    update()
+});
 
 //
 // Código que se ejecuta al lanzar la aplicación. 
