@@ -132,6 +132,33 @@
         </div>
     </div>
 
+        <!-- 
+        Modal para pedir confirmacion al restaurar la ultima version
+    -->
+
+    <div class="modal fade custom-modal" id="modalUndo" tabindex="-1" aria-labelledby="cmUndoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cmUndoLabel">
+                        <!-- reemplazar desde JS -->
+                        Borrando patata
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="row" id="cmUndoForm">
+                        <!-- reemplazar desde JS -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="cmUndoModal" class="btn delete-button edit">Restaurar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap usando una copia local -->
     <script src="js/bootstrap-5.2.2.bundle.js"></script>
 

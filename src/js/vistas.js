@@ -551,7 +551,7 @@ export function usersScript() {
         for (let r of document.querySelectorAll(rowSel)) {
             let ok = true;
             for (let [f, col] of 
-                [[name, 0], [role, 1], [email, 2], [dni, 3]]) {
+                [[name, 1], [role, 2], [email, 3], [dni, 4]]) {
                     if (f == '' || ! ok) continue;
                     const v = valueAt(r, col).toLowerCase();
                     console.log(v, f, col, v.indexOf(f));
@@ -593,7 +593,7 @@ export function coursesScript() {
         for (let r of document.querySelectorAll(rowSel)) {
             let ok = true;
             for (let [f, col] of 
-                [[name, 0], [area, 1], [nivel, 2], [ediciones, 3]]) {
+                [[name, 1], [area, 2], [nivel, 3], [ediciones, 4]]) {
                     if (f == '' || ! ok) continue;
                     const v = valueAt(r, col).toLowerCase();
                     console.log(v, f, col, v.indexOf(f));
@@ -635,7 +635,7 @@ export function studentsScript() {
         for (let r of document.querySelectorAll(rowSel)) {
             let ok = true;
             for (let [f, col] of
-                [[name, 0], [email, 1], [dni, 2], [grade, 3]]) {
+                [[name, 1], [email, 2], [dni, 3], [grade, 4]]) {
                 if (f == '' || !ok) continue;
                 const v = valueAt(r, col).toLowerCase();
                 console.log(v, f, col, v.indexOf(f));

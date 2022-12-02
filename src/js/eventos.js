@@ -85,19 +85,13 @@ export function bindRmEditionDetails(clickSelector, formTitleSelector, formSelec
         form.innerHTML = formContentsFn(edition);
         const deleteButton = U.one(formDeleteSelector);
         const deleteListener = ae => {
+            Cm.saveState();
             Cm.rmEdition(id);
             modalFn().hide();
             callback();
         }
         deleteButton.addEventListener('click', deleteListener);
     }));
-    /*
-    U.one(clickSelector).addEventListener('click', e => {
-        const id = e.target.dataset.id;
-        console.log(e, id);
-        Cm.rmEdition(id);
-        callback();
-    });*/
 }
 
 export function bindRmFromEdition(clickSelector, formTitleSelector, formSelector, formDeleteSelector, modalFn, formTitleFn, formContentsFn, callback) {
@@ -117,6 +111,7 @@ export function bindRmFromEdition(clickSelector, formTitleSelector, formSelector
         const deleteButton = U.one(formDeleteSelector);
         const deleteListener = ae => {
             modalFn().hide();
+            Cm.saveState();
             Cm.setEdition(edition);
             e.target.closest("tr").remove();
             callback();
@@ -138,6 +133,7 @@ export function bindRmCourseRow(clickSelector, formTitleSelector, formSelector, 
         form.innerHTML = formContentsFn(user);
         const deleteButton = U.one(formDeleteSelector);
         const deleteListener = ae => {
+            Cm.saveState();
             const row = e.target.closest("tr");
             Cm.rmCourse(id);
             row.remove();
@@ -161,6 +157,7 @@ export function bindRmUserRow(clickSelector, formTitleSelector, formSelector, fo
         form.innerHTML = formContentsFn(user);
         const deleteButton = U.one(formDeleteSelector);
         const deleteListener = ae => {
+            Cm.saveState();
             const row = e.target.closest("tr");
             Cm.rmUser(id);
             row.remove();
@@ -168,6 +165,46 @@ export function bindRmUserRow(clickSelector, formTitleSelector, formSelector, fo
         }
         deleteButton.addEventListener('click', deleteListener);
     }));
+}
+
+export function saveState(formTitleSelector, formSelector, formSaveSelector, modalFn, formTitleFn, formContentsFn) {
+    modalFn().show();
+    const form = U.one(formSelector);
+    U.one(formTitleSelector).innerHTML = formTitleFn();
+    form.innerHTML = formContentsFn();
+    const saveButton = U.one(formSaveSelector);
+    const saveListener = ae => {
+        Cm.saveState();
+        modalFn().hide();
+    }
+    saveButton.addEventListener('click', saveListener);
+}
+
+export function deleteStates(formTitleSelector, formSelector, formDeleteSelector, modalFn, formTitleFn, formContentsFn) {
+    modalFn().show();
+    const form = U.one(formSelector);
+    U.one(formTitleSelector).innerHTML = formTitleFn();
+    form.innerHTML = formContentsFn();
+    const deleteButton = U.one(formDeleteSelector);
+    const deleteListener = ae => {
+        localStorage.clear();
+        modalFn().hide();
+    }
+    deleteButton.addEventListener('click', deleteListener);
+}
+
+export function undoState(formTitleSelector, formSelector, formUndoSelector, modalFn, formTitleFn, formContentsFn, callback) {
+    modalFn().show();
+    const form = U.one(formSelector);
+    U.one(formTitleSelector).innerHTML = formTitleFn();
+    form.innerHTML = formContentsFn();
+    const undoButton = U.one(formUndoSelector);
+    const undoListener = ae => {
+        Cm.restoreState();
+        modalFn().hide();
+        callback();
+    }
+    undoButton.addEventListener('click', undoListener);
 }
 
 export function bindAddOrEditUser(clickSelector, formTitleSelector, formSelector, formAcceptSelector,
