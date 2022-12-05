@@ -43,7 +43,7 @@ function userRow(user, editions) {
     const docencia = editions.filter(o => o.teachers.indexOf(user.id) != -1)
     return `
     <tr data-id="${user.id}" class="user-table-row">
-        <td><input type="checkbox" value="${user.id}" name="users"/></td>
+        <td><input type="checkbox" id="checkbox" data-id="${user.id}" name="users"/></td>
         <td>${user.name}</td>
         <td><span class="${roleClasses[user.role]}">${user.role}</span></td>
         <td>${user.email}</td>
@@ -84,6 +84,15 @@ export function createUserTable(users) {
         </div>
         <div class="col text-end">
             <button title="Crea un nuevo usuario" class="add-user btn create-button mx-2">➕</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-2">
+            <button  class="add-alumno-to-edition-massive btn btn-light mx-2 mb-3 mt-3">Add to edition</button>
+        </div>
+        <div class="col">
+            <button class="remove-massive btn btn-danger mx-2 mb-3 mt-3">Remove selected</button>
         </div>
     </div>
 
@@ -262,7 +271,7 @@ function studentRow(user, edition, results) {
 
 function teacherRow(user, edition, results) {
     return `
-    <tr class="teacher-table-row" data-user-id="${user.id}" data-edition-id="${edition.id}">>
+    <tr class="teacher-table-row" data-user-id="${user.id}" data-edition-id="${edition.id}">
         <td>${user.name}</td>
         <td>${user.email}</td>
         <td>${user.dni}</td>
@@ -447,6 +456,21 @@ export function prepareAddUserToEditionModal(edition, role) {
     <form class="row">
         <div class="col-md-auto">
             <select class="form-select" name="dni" required>
+                ${options}
+            </select>
+        </div>
+        <button style="display: none" type="submit">Invisible, sólo para validación</button>
+    </form>
+    `;
+}
+
+export function prepareAddUserToEditionModalMassive() {
+    let candidates = Cm.getEditions();
+    let options = candidates.map(o => `<option value="${o.id}">${o.name} (${o.id})</option>`).join();
+    return `
+    <form class="row">
+        <div class="col-md-auto">
+            <select class="form-select" name="id" required>
                 ${options}
             </select>
         </div>

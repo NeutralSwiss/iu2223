@@ -45,6 +45,10 @@ function update() {
         E.bindRmUserRow("#users button.rm-fila", "#modalDelete .modal-title", "#cmDeleteForm", "#cmDeleteModal", () => modalDelete,
         (user) => `Eliminando user <i>${user.name}</i>`, () => `Se eliminara el usuario de todas las ediciones junto a sus datos y notas, desea continuar? Se guardara automaticamente una version de la pagina antes de eliminar el elemento` ,() => update());
 
+        E.bindRmUserRowMassive(".remove-massive", "#modalDelete .modal-title", "#cmDeleteForm", "#cmDeleteModal", () => modalDelete,
+        (users) => `Eliminando a <i>${users}</i> usuarios seleccionados`, () => `Se eliminaran los usuarios seleccionados de todas las ediciones junto a sus datos y notas, desea continuar? Se guardara automaticamente una version de la pagina antes de eliminar el elemento` ,() => update());
+
+
         E.bindAddEditionToCourse(".add-edition", () => update());
 
         E.bindDetails("#courses .edition-link", "#details",
@@ -78,6 +82,12 @@ function update() {
             return `Eliminando usuario <i>${user.name}</i> de la edicion <i>${edition.name}</i>`},
             () => `Se eliminaran las notas del usuario en esta edicion, desea continuar? Se guardara automaticamente una version de la pagina antes de eliminar el elemento`,() => update());
 
+        
+        E.bindAddUserToEditionMassive(".add-alumno-to-edition-massive",
+                    "#cmModal .modal-title", "#cmEditForm", "#cmAcceptModal", () => modalEdit,
+                    (users) => `Añadiendo <i>${users}</i> usuarios seleccionados a la Edicion`,
+                    () => V.prepareAddUserToEditionModalMassive(),
+                    () => {});
 
         E.bindAddOrEditUser(".add-user,.set-user",
             "#cmModal .modal-title", "#cmEditForm", "#cmAcceptModal", () => modalEdit,
@@ -104,11 +114,17 @@ function update() {
         U.insertScript(V.coursesScript())
         U.insertScript(V.studentsScript())
 
+        E.bindCheckboxColumn("#users", "");
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-users", "#search-in-users-input", "#filter-in-users")
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-courses", "#search-in-courses-input", "#filter-in-courses")
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-student", "#search-in-students-input", "#filter-in-student")
 
-        E.bindCheckboxColumn("#users", "");
+
+        
+
+
+        
+        
 
     } catch (e) {
         console.log('Error actualizando', e);

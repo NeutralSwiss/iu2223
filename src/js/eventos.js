@@ -43,7 +43,7 @@ export function bindAddUserToEdition(clickSelector, formTitleSelector, formSelec
         const id = e.target.dataset.id;
         console.log(e, id);
         const edition = Cm.resolve(id);
-
+        console.log(edition);
         modalFn().show();
         const form = U.one(formSelector);
         U.one(formTitleSelector).innerHTML = formTitleFn(edition);
@@ -55,6 +55,7 @@ export function bindAddUserToEdition(clickSelector, formTitleSelector, formSelec
             const dni = dniInput.value;
             const candidates = Cm.getUsers({ dni });
             if (candidates.length == 1) {
+
                 candidates[0].role == Cm.UserRole.STUDENT ?
                     edition.students.push(candidates[0].id) :
                     edition.teachers.push(candidates[0].id);
@@ -71,6 +72,60 @@ export function bindAddUserToEdition(clickSelector, formTitleSelector, formSelec
         acceptButton.addEventListener('click', acceptListener);
     });
 };
+
+export function bindAddUserToEditionMassive(clickSelector, formTitleSelector, formSelector, formAcceptSelector,
+    modalFn, formTitleFn, formContentsFn, callback) {
+
+    U.one(clickSelector).addEventListener('click', e => {
+
+        const checkboxes = document.querySelectorAll("#checkbox");
+        const checkboxesArray = Array.from(checkboxes);
+        const checked = checkboxesArray.filter(e => e.checked);
+        const students = checked.map(e => {
+            let id = parseFloat(e.dataset.id);
+            let student = Cm.getUsers({ id:id })[0];
+            return student;
+        });
+
+        modalFn().show();
+        const form = U.one(formSelector);
+        U.one(formTitleSelector).innerHTML = formTitleFn(students.length);
+        form.innerHTML = formContentsFn();
+        const acceptButton = U.one(formAcceptSelector);
+        const acceptListener = ae => {
+            const idInput = form.querySelector("select[name=id]");
+            console.log(idInput, idInput.value);
+            const id = parseFloat(idInput.value);
+            const edition = Cm.getEditions({ id })
+            
+                if (edition.length == 1) {
+                    students.forEach(e => {
+                        e.role == Cm.UserRole.STUDENT ?
+                            edition[0].students.push(e.id):
+                            edition[0].teachers.push(e.id);
+                        
+                    })
+                    console.log("Alumnos: " + edition[0].teachers);
+                    console.log("Profesores: " + edition[0].teachers);
+                    modalFn().hide();
+                    Cm.setEdition(edition[0]);
+                    acceptButton.removeEventListener('click', acceptListener);
+                    callback();
+                }
+                else {
+                    // show errors by clicking hidden submit button only if there *are* errors
+                    idInput.setCustomValidity("No hay edicion con esa ID");
+                    form.querySelector("button[type=submit]").click();
+                    console.log(id);
+                }
+
+            
+
+        }
+        acceptButton.addEventListener('click', acceptListener);
+    });
+};
+
 
 export function bindRmEditionDetails(clickSelector, formTitleSelector, formSelector, formDeleteSelector, modalFn, formTitleFn, formContentsFn, callback) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
@@ -167,6 +222,33 @@ export function bindRmUserRow(clickSelector, formTitleSelector, formSelector, fo
     }));
 }
 
+export function bindRmUserRowMassive(clickSelector, formTitleSelector, formSelector, formDeleteSelector, modalFn, formTitleFn, formContentsFn, callback) {
+
+    U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
+
+        const checkboxes = document.querySelectorAll("#checkbox");
+        const checkboxesArray = Array.from(checkboxes);
+        const checked = checkboxesArray.filter(e => e.checked);
+
+        modalFn().show();
+        const form = U.one(formSelector);
+        U.one(formTitleSelector).innerHTML = formTitleFn(checked.length);
+        form.innerHTML = formContentsFn();
+        const deleteButton = U.one(formDeleteSelector);
+        const deleteListener = ae => {
+            Cm.saveState();
+            checked.forEach(e=>{
+                const row = e.closest("tr");
+                Cm.rmUser(e.dataset.id);
+                row.remove();
+            })
+            modalFn().hide();
+        }
+        deleteButton.addEventListener('click', deleteListener);
+    }));
+}
+
+
 export function saveState(formTitleSelector, formSelector, formSaveSelector, modalFn, formTitleFn, formContentsFn) {
     modalFn().show();
     const form = U.one(formSelector);
@@ -206,6 +288,13 @@ export function undoState(formTitleSelector, formSelector, formUndoSelector, mod
     }
     undoButton.addEventListener('click', undoListener);
 }
+
+
+
+
+
+
+
 
 export function bindAddOrEditUser(clickSelector, formTitleSelector, formSelector, formAcceptSelector,
     modalFn, formTitleFn, formContentsFn, callback) {
@@ -308,17 +397,17 @@ export function advancedUserFilter(filterSel, rowSel) {
     const dni = filterDiv.querySelector("input[name=dni]").value.toLowerCase();
     const email = filterDiv.querySelector("input[name=email]").value.toLowerCase();
     const role = filterDiv.querySelector("select[name=role]").value.toLowerCase();
-    
+
     const valueAt = (row, i) => row.children[i].innerText || row.children[i].textContent;
-    
+
     for (let r of document.querySelectorAll(rowSel)) {
         let ok = true;
-        for (let [f, col] of 
+        for (let [f, col] of
             [[name, 0], [role, 1], [email, 2], [dni, 3]]) {
-                if (f == '' || ! ok) continue;
-                const v = valueAt(r, col).toLowerCase();
-                console.log(v, f, col, v.indexOf(f));
-                if (v.indexOf(f) == -1) ok = false;
+            if (f == '' || !ok) continue;
+            const v = valueAt(r, col).toLowerCase();
+            console.log(v, f, col, v.indexOf(f));
+            if (v.indexOf(f) == -1) ok = false;
         }
         r.style.display = ok ? '' : 'none';
     }
@@ -330,17 +419,17 @@ export function advancedCourseFilter(filterSel, rowSel) {
     const area = filterDiv.querySelector("select[name=area]").value.toLowerCase();
     const nivel = filterDiv.querySelector("select[name=nivel]").value.toLowerCase();
     const ediciones = filterDiv.querySelector("input[name=ediciones]").value.toLowerCase();
-    
+
     const valueAt = (row, i) => row.children[i].innerText || row.children[i].textContent;
-    
+
     for (let r of document.querySelectorAll(rowSel)) {
         let ok = true;
-        for (let [f, col] of 
+        for (let [f, col] of
             [[name, 0], [area, 1], [nivel, 2], [ediciones, 3]]) {
-                if (f == '' || ! ok) continue;
-                const v = valueAt(r, col).toLowerCase();
-                console.log(v, f, col, v.indexOf(f));
-                if (v.indexOf(f) == -1) ok = false;
+            if (f == '' || !ok) continue;
+            const v = valueAt(r, col).toLowerCase();
+            console.log(v, f, col, v.indexOf(f));
+            if (v.indexOf(f) == -1) ok = false;
         }
         r.style.display = ok ? '' : 'none';
     }
@@ -410,8 +499,8 @@ export function bindSortColumn(clickSelector) {
         // devuelve una función de comparación para 2 elementos, sobre col. idx, creciente o no (asc)
         const comparador = (idx, asc) => (a, b) => ((v1, v2) =>
             v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ?
-            v1 - v2 :
-            v1.toString().localeCompare(v2)
+                v1 - v2 :
+                v1.toString().localeCompare(v2)
         )(valueAt(asc ? a : b, idx), valueAt(asc ? b : a, idx));
 
         // comprueba y actualiza asc (ascendente)
