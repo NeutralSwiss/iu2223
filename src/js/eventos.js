@@ -127,6 +127,31 @@ export function bindAddUserToEditionMassive(clickSelector, formTitleSelector, fo
 };
 
 
+export function massiveButtonsdisable(){
+    let checkboxes = document.querySelectorAll("input[type=checkbox]");
+        let removeButton = document.querySelector(".add-alumno-to-edition-massive");
+        let button = document.querySelector(".remove-massive");
+        removeButton.disabled = true;
+        button.disabled = true;
+        checkboxes.forEach(e=>{
+            e.onclick = () =>{
+                let checked = false;
+                checkboxes.forEach(e=>{
+                    if(e.checked) checked = true;
+                })
+                if(checked){
+                    removeButton.disabled = false;
+                    button.disabled = false;
+                }
+                else{
+                    removeButton.disabled = true;
+                    button.disabled = true;
+                }
+            }
+        })
+}
+
+
 export function bindRmEditionDetails(clickSelector, formTitleSelector, formSelector, formDeleteSelector, modalFn, formTitleFn, formContentsFn, callback) {
     U.all(clickSelector).forEach(o => o.addEventListener('click', e => {
         const id = e.target.dataset.id;

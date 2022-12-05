@@ -115,6 +115,9 @@ function update() {
         U.insertScript(V.studentsScript())
 
         E.bindCheckboxColumn("#users", "");
+        E.massiveButtonsdisable();
+
+
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-users", "#search-in-users-input", "#filter-in-users")
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-courses", "#search-in-courses-input", "#filter-in-courses")
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-student", "#search-in-students-input", "#filter-in-student")
