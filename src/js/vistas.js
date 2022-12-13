@@ -329,7 +329,7 @@ export function createDetailsForEdition(edition) {
             <input id="search-in-students-input" type="search" class="form-control" placeholder="Filtrar" />
             <span class="input-group-text">🔍</span>
         </div>
-        <div class="col">
+        <div class="col"> 
         <button id="search-advanced-toggle-student" title="Búsqueda avanzada"
             class="btn btn-light">🔍🔍</button>
         </div>
@@ -659,7 +659,7 @@ export function studentsScript() {
         for (let r of document.querySelectorAll(rowSel)) {
             let ok = true;
             for (let [f, col] of
-                [[name, 1], [email, 2], [dni, 3], [grade, 4]]) {
+                [[name, 0], [email, 1], [dni, 2], [grade, 3]]) {
                 if (f == '' || !ok) continue;
                 const v = valueAt(r, col).toLowerCase();
                 console.log(v, f, col, v.indexOf(f));
