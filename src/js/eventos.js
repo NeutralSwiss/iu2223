@@ -80,7 +80,8 @@ export function bindAddUserToEditionMassive(clickSelector, formTitleSelector, fo
 
         const checkboxes = document.querySelectorAll("#checkbox");
         const checkboxesArray = Array.from(checkboxes);
-        const checked = checkboxesArray.filter(e => e.checked);
+        const checked_all = checkboxesArray.filter(e => e.checked);
+        const checked = checked_all.filter(e => e.closest("tr").style.display != "none")
         const students = checked.map(e => {
             let id = parseFloat(e.dataset.id);
             let student = Cm.getUsers({ id:id })[0];
@@ -253,7 +254,8 @@ export function bindRmUserRowMassive(clickSelector, formTitleSelector, formSelec
 
         const checkboxes = document.querySelectorAll("#checkbox");
         const checkboxesArray = Array.from(checkboxes);
-        const checked = checkboxesArray.filter(e => e.checked);
+        const checked_all = checkboxesArray.filter(e => e.checked);
+        const checked = checked_all.filter(e => e.closest("tr").style.display != "none")
 
         modalFn().show();
         const form = U.one(formSelector);

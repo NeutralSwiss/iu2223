@@ -59,3 +59,34 @@ th {
 .modal-content {
   background-color:rgb(56, 56, 83);
 }
+
+.table-title:hover{
+  cursor: pointer;
+  transform: scale(1.1) translateX(3px);
+  text-decoration: underline white;
+  transition: 0.5s;
+}
+
+#myTabContent{
+  padding-right: 5px;
+}
+
+#myTabContent::-webkit-scrollbar{
+  background: transparent;
+  width: 8px;
+}
+#myTabContent::-webkit-scrollbar-thumb{
+  border-radius: 10px;
+  background: #191924;
+  opacity: 0;
+}
+
+#myTabContent::-webkit-scrollbar-thumb:hover{
+  
+  background: black;
+  
+}
+
+.add-alumno-to-edition-massive{
+  margin-left: -10px;
+}

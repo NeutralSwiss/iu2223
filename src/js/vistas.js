@@ -88,7 +88,7 @@ export function createUserTable(users) {
     </div>
 
     <div class="row">
-        <div class="col-2">
+        <div class="col-3">
             <button  class="add-alumno-to-edition-massive btn btn-light mx-2 mb-3 mt-3">Add to edition</button>
         </div>
         <div class="col">
@@ -124,11 +124,11 @@ export function createUserTable(users) {
     <table class="table">
     <tr>
         <th><input type="checkbox" name="toggle"/></td>
-        <th>Nombre</th>
-        <th>Rol</th>
-        <th>Correo</th>
-        <th>DNI</th>
-        <th title="número de ediciones en las que es alumno y/ó profesor">A/P</th>
+        <th class="table-title">Nombre</th>
+        <th class="table-title">Rol</th>
+        <th class="table-title">Correo</th>
+        <th class="table-title">DNI</th>
+        <th class="table-title" title="número de ediciones en las que es alumno y/ó profesor">A/P</th>
         <th>Acciones</th>        
     </tr>
     ${filas}
@@ -241,10 +241,10 @@ export function createCoursesTable(courses) {
 
     <table class="table">
     <tr>
-        <th>Nombre</th>
-        <th>Área</th>
-        <th>Nivel</th>
-        <th>Ediciones</th>
+        <th class="table-title">Nombre</th>
+        <th class="table-title">Área</th>
+        <th class="table-title">Nivel</th>
+        <th class="table-title">Ediciones</th>
         <th>Acciones</th>
     </tr>
     ${filas}
@@ -315,9 +315,9 @@ export function createDetailsForEdition(edition) {
     </div>
     <table class="table w-100 ml-4">
     <tr>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>DNI</th>
+        <th class="table-title">Nombre</th>
+        <th class="table-title">Correo</th>
+        <th class="table-title">DNI</th>
         <th>Acciones</th>
     </tr>
     ${filasProfesor}
@@ -365,10 +365,10 @@ export function createDetailsForEdition(edition) {
 
     <table class="table w-100 ml-4">
     <tr>
-        <th>Nombre</th>
-        <th>Correo</th>
-        <th>DNI</th>
-        <th>Nota</th>
+        <th class="table-title">Nombre</th>
+        <th class="table-title">Correo</th>
+        <th class="table-title">DNI</th>
+        <th class="table-title">Nota</th>
         <th>Acciones</th>
     </tr>
     ${filasAlumno}
@@ -437,10 +437,10 @@ export function createDetailsForUser(user) {
     </div>
     <table class="table w-100">
     <tr>
-        <th>Edición</th>
-        <th>Valoración global</th>
-        ${student ? '<th>Valoración propia</th>': ''}
-        ${student ? '<th>Nota</th>': ''}
+        <th class="table-title">Edición</th>
+        <th class="table-title">Valoración global</th>
+        ${student ? '<th class="table-title">Valoración propia</th>': ''}
+        ${student ? '<th class="table-title">Nota</th>': ''}
         <th>Acciones</th>
     </tr>
     ${filasEdicionUsuario}

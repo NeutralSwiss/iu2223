@@ -117,6 +117,9 @@ function update() {
         E.bindCheckboxColumn("#users", "");
         E.massiveButtonsdisable();
 
+        
+
+
 
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-users", "#search-in-users-input", "#filter-in-users")
         E.alternaBusquedaAvanzadaUsuarios("#search-advanced-toggle-courses", "#search-in-courses-input", "#filter-in-courses")
